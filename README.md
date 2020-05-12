@@ -1,6 +1,6 @@
 # Robobuddy
 
-Play with a frieldnly robo-buddy of your own in WebVR!
+Play with a friendly robo-buddy of your own in WebVR!
 
 ## Contributing
 
