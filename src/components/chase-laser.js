@@ -36,7 +36,10 @@ AFRAME.registerComponent("chase-laser", {
       // If it can't see the laser, search for it.
       this.search(timestamp, delta);
     } else if (this.closeToPoint(this.data.laser.object3D.position)) {
-      this.found = true;
+      if (!this.found) {
+        this.el.emit("happy");
+        this.found = true;
+      }
 
       this.timeToHunt = null;
       this.timeToLook = null;
@@ -105,6 +108,8 @@ AFRAME.registerComponent("chase-laser", {
       // If no search point, pick one where the head is looking.
       this.randomWanderPointAlongGaze();
       this.hasWanderPoint = true;
+
+      this.el.emit("sad");
     } else if (this.closeToPoint(this.wanderPoint)) {
       // If point is reached, pick a new one.
       this.randomWanderPoint();
