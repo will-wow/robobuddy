@@ -1,20 +1,13 @@
 AFRAME.registerComponent("laser-zone", {
   schema: {
+    pointing: { type: "boolean", default: "false" },
     laser: { type: "selector" },
-  },
-  init() {
-    this.pointing = false;
-
-    document.addEventListener("mousedown", () => {
-      this.pointing = !this.pointing;
-      this.data.laser.setAttribute("visible", this.pointing);
-    });
   },
   events: {
     "raycaster-intersected"(event) {
       this.intersectingRaycaster = event.detail.el.components.raycaster;
 
-      if (this.pointing) {
+      if (this.data.pointing) {
         this.data.laser.setAttribute("visible", true);
       }
     },
@@ -26,7 +19,7 @@ AFRAME.registerComponent("laser-zone", {
   },
 
   tick() {
-    if (!this.pointing || !this.intersectingRaycaster) {
+    if (!this.data.pointing || !this.intersectingRaycaster) {
       return;
     }
     const intersectionIndex = this.intersectingRaycaster.intersectedEls.indexOf(
@@ -38,10 +31,5 @@ AFRAME.registerComponent("laser-zone", {
 
     const point = intersection.point;
     this.data.laser.object3D.position.copy(point);
-  },
-
-  setPointing(pointing) {
-    this.pointing = pointing;
-    this.data.laser.setAttribute("visible", this.pointing);
   },
 });

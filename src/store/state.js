@@ -3,10 +3,13 @@ export const ACTIONS = {
   controllerConnectedLeft: "controllerConnectedLeft",
   showUi: "showUi",
   hideUi: "hideUi",
+  pointStart: "pointStart",
+  pointEnd: "pointEnd",
 };
 
 AFRAME.registerState({
   initialState: {
+    pointing: false,
     controller: {
       left: false,
       right: false,
@@ -14,6 +17,12 @@ AFRAME.registerState({
     uiShown: false,
   },
   handlers: {
+    [ACTIONS.pointStart](state) {
+      state.pointing = true;
+    },
+    [ACTIONS.pointEnd](state) {
+      state.pointing = false;
+    },
     [ACTIONS.controllerConnectedRight](state) {
       state.controller.right = true;
     },

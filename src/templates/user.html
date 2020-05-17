@@ -1,10 +1,9 @@
 <a-entity
   id="leftHand"
-  hand-controls="hand: left"
-  trigger-action="action: prevSlide; event: gripdown;"
-  bind__ui="uiShown: uiShown"
-  trigger-action__xbuttondown="action: prevSlide;"
+  tracked-controls="hand: left"
   trigger-action__controllerconnected="action: controllerConnectedLeft;"
+  bind__visible="controller.left"
+  bind__ui="uiShown: uiShown"
 >
   <a-entity position="0.3 0 0" rotation="0 0 -90" bind__show-buttons="uiShown">
     <!-- <path="hand-control-panel.html"></require> -->
@@ -12,23 +11,25 @@
 </a-entity>
 
 <a-entity
+  id="fixed-control-panel"
   position="-1 1.6"
   rotation="0 90 0"
-  bind__show-buttons="!controllerConnectedLeft"
+  bind__show-buttons="!controller.left"
 >
   <!-- <path="hand-control-panel.html"></require> -->
 </a-entity>
 
 <a-entity
   id="rightHand"
-  hand-controls="hand: right"
+  tracked-controls="hand: right"
+  trigger-action__controllerconnected="action: controllerConnectedRight"
+  bind__visible="controller.right"
   laser-controls
   raycaster="objects: .floor; showLine: true"
   line="color: red"
-  trigger-action__controllerconnected="action: controllerConnectedRight;"
-  trigger-action__abuttondown="action: nextSlide;"
-  trigger-action__gripdown="action: pointStart;"
-  trigger-action__gripup="action: pointEnd;"
+  bind__line="visible: speakerLaser"
+  trigger-action__abuttondown="action: pointStart"
+  trigger-action__abuttonup="action: pointEnd"
 ></a-entity>
 
 <a-entity id="rig" movement-controls>
@@ -37,6 +38,8 @@
     position="0 1.6 0"
     look-controls="pointerLockEnabled: true"
     raycaster="objects: .floor"
+    trigger-action__mousedown="action: pointStart; document: true"
+    trigger-action__mouseup="action: pointEnd; document: true;"
   ></a-entity>
 </a-entity>
 
@@ -45,7 +48,7 @@
   position="-3 0 -5"
   geometry="primitive: cylinder; radius: 0.1; height: 0.01"
   material="color: red"
-  visible="false"
+  bind__visible="pointing"
 ></a-entity>
 
 <!-- <a-entity camera look-controls position="0 1.6 0">
