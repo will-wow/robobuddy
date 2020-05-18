@@ -4,12 +4,13 @@
   chase-laser="laser: #laser-point"
   sound__happy="src: #happy; on: happy"
   sound__sad="src: #sad; on: sad"
+  sound__motor="src: #motor; loop: true"
 >
   <a-entity
     id="robot-head"
-    geometry="width: 0.5; height: 0.25; depth: 0.25"
+    geometry="width: 0.4; height: 0.2; depth: 0.2"
     material="color: silver"
-    position="0 0.5 0.3"
+    position="0 0.4 0.15"
     rotation="15 0 0"
   >
     <a-entity id="eyes" position="0 0 0.1">
@@ -21,15 +22,14 @@
 
   <a-entity
     id="eye-stalk"
-    geometry="primitive: cylinder; height: 0.5; radius: 0.02"
+    geometry="primitive: cylinder; height: 0.2; radius: 0.02"
     material="color: silver"
-    position="0 0.25 0.3"
-  >
-  </a-entity>
+    position="0 0.25 0.15"
+  ></a-entity>
 
   <a-entity
     id="robot-body"
-    geometry="height: 0.25; width: 0.75; depth: 1"
+    geometry="height: 0.2; width: 0.2; depth: 0.4"
     material="color: silver"
     position="0 0.1 0"
   ></a-entity>
@@ -37,28 +37,28 @@
   <a-entity
     id="wheel-left-front"
     mixin="wheel"
-    position="-0.4 0 0.3"
+    position="-0.1 0 0.125"
     rotation="0 0 90"
   ></a-entity>
 
   <a-entity
     id="wheel-right-front"
     mixin="wheel"
-    position="0.4 0 0.3"
+    position="0.1 0 0.125"
     rotation="0 0 -90"
   ></a-entity>
 
   <a-entity
     id="wheel-left-back"
     mixin="wheel"
-    position="-0.4 0 -0.3"
+    position="-0.1 0 -0.125"
     rotation="0 0 -90"
   ></a-entity>
 
   <a-entity
     id="wheel-right-back"
     mixin="wheel"
-    position="0.4 0 -0.3"
+    position="0.1 0 -0.125"
     rotation="0 0 -90"
   ></a-entity>
 </a-entity>

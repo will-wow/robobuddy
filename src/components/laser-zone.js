@@ -1,6 +1,6 @@
 AFRAME.registerComponent("laser-zone", {
   schema: {
-    pointing: { type: "boolean", default: "false" },
+    pointing: { type: "boolean", default: false },
     laser: { type: "selector" },
   },
   events: {

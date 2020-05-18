@@ -15,6 +15,7 @@ AFRAME.registerComponent("chase-laser", {
     this.targetHeading = new THREE.Vector3();
     this.headDirection = new THREE.Vector3();
     this.wanderPoint = new THREE.Vector3();
+    this.moving = false;
 
     /** Timestamp to start moving */
     this.timeToHunt = null;
@@ -59,6 +60,45 @@ AFRAME.registerComponent("chase-laser", {
       this.hunt(timestamp, delta);
     }
   },
+  admire() {
+    this.lookAtLaser();
+
+    this.handleNotMoving();
+  },
+  hunt(timestamp, delta) {
+    if (!this.timeToHunt) {
+      // Record when robot will start moving toward the dot.
+      this.timeToHunt = timestamp + random(1000, 2000);
+
+      this.handleNotMoving();
+    } else if (this.timeToHunt < timestamp) {
+      // If it's been long enough, start moving towards the laser.
+      this.moveTowardLaser(delta);
+
+      this.handleMoving();
+    } else {
+      this.handleNotMoving();
+    }
+
+    this.lookAtLaser();
+  },
+  search(timestamp, delta) {
+    if (!this.timeToLook) {
+      // Initialize times.
+      this.timeToLook = timestamp + random(500, 1000);
+      this.timeToWander = timestamp + random(3000, 6000);
+      this.hasWanderPoint = false;
+      this.handleNotMoving();
+    } else if (this.timeToWander < timestamp) {
+      // Wander
+      this.searchMove(delta);
+      this.handleMoving();
+    } else if (this.timeToLook < timestamp) {
+      // Look around
+      this.searchHead(delta);
+      this.handleNotMoving();
+    }
+  },
   canSeeLaser() {
     if (!this.data.laser.getAttribute("visible")) return false;
 
@@ -77,47 +117,23 @@ AFRAME.registerComponent("chase-laser", {
     // 1 is 0 degrees, 0 is 90 degrees.
     return dot > 0.6;
   },
-  admire() {
-    this.lookAtLaser();
-  },
-  hunt(timestamp, delta) {
-    if (!this.timeToHunt) {
-      // Record when robot will start moving toward the dot.
-      this.timeToHunt = timestamp + random(1000, 2000);
-    } else if (this.timeToHunt < timestamp) {
-      // If it's been long enough, start moving towards the laser.
-      this.moveTowardLaser(delta);
-    }
 
-    this.lookAtLaser();
-  },
-  search(timestamp, delta) {
-    if (!this.timeToLook) {
-      // Initialize times.
-      this.timeToLook = timestamp + random(500, 1000);
-      this.timeToWander = timestamp + random(3000, 6000);
-      this.hasWanderPoint = false;
-    } else if (this.timeToWander < timestamp) {
-      this.searchMove(delta);
-    } else if (this.timeToLook < timestamp) {
-      this.searchHead(delta);
-    }
-  },
   searchMove(delta) {
     if (!this.hasWanderPoint) {
       // If no search point, pick one where the head is looking.
-      this.randomWanderPointAlongGaze();
+      this.setRandomWanderPointAlongGaze();
       this.hasWanderPoint = true;
 
       this.el.emit("sad");
     } else if (this.closeToPoint(this.wanderPoint)) {
       // If point is reached, pick a new one.
-      this.randomWanderPoint();
+      this.setRandomWanderPoint();
     } else {
       // Move toward point
       this.moveToward(this.wanderPoint, SEARCH_SPEED, delta);
-      // Look at point.
-      this.head.object3D.lookAt(this.wanderPoint);
+
+      // Look Forward
+      this.head.object3D.rotation.copy(FORWARD_EULER);
     }
   },
   searchHead(delta) {
@@ -144,17 +160,31 @@ AFRAME.registerComponent("chase-laser", {
   closeToPoint(position) {
     return this.el.object3D.position.distanceTo(position) < 1;
   },
-  randomWanderPointAlongGaze() {
+  setRandomWanderPointAlongGaze() {
     // Get normalized head direction
-    this.head.object3D.getWorldDirection(this.headDirection).normalize();
+    this.head.object3D
+      .getWorldDirection(this.headDirection)
+      .setX(0)
+      .normalize();
 
     // Send point out in direction of head.
     this.wanderPoint
       .copy(this.el.object3D.position)
       .addScaledVector(this.headDirection, random(1, 3));
   },
-  randomWanderPoint() {
+  setRandomWanderPoint() {
     this.wanderPoint.set(random(-5, 5), 0.1, random(-5, 5));
+  },
+  handleMoving() {
+    if (this.moving) return;
+    this.moving = true;
+
+    this.el.components["sound__motor"].playSound();
+  },
+  handleNotMoving() {
+    if (!this.moving) return;
+    this.moving = false;
+    this.el.components["sound__motor"].stopSound();
   },
 });
 
