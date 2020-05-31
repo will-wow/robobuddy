@@ -1,4 +1,6 @@
-AFRAME.registerComponent("show-buttons", {
+import { CompDefinition } from "./type";
+
+export const ShowButtonsComponent: CompDefinition<any> = {
   schema: { type: "boolean", default: true },
   update(oldData) {
     const visible = this.data;
@@ -14,4 +16,6 @@ AFRAME.registerComponent("show-buttons", {
       }
     });
   },
-});
+};
+
+AFRAME.registerComponent("show-buttons", ShowButtonsComponent);

@@ -1,8 +1,6 @@
-# Robi
+# Robobuddy
 
-Robi is tool for presenting and viewing short talks in virtual reality.
-
-The Viwer is an A-Frame app that allows users to view and record talks.
+Play with a frieldnly robo-buddy of your own in WebVR!
 
 ## Contributing
 

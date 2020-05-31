@@ -3,7 +3,7 @@ function requireAll(req) {
 }
 
 // Require all components.
-requireAll(require.context("./components/", true, /\.js$/));
+requireAll(require.context("./components/", true, /\.(js|ts)$/));
 
 import "aframe-extras";
 import "aframe-aabb-collider-component";

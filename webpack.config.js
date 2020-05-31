@@ -9,35 +9,35 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     hotOnly: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "index.js",
-    publicPath: "/"
+    publicPath: "/",
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
-      filename: "./index.html"
+      filename: "./index.html",
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development"
+      NODE_ENV: "development",
     }),
     new Dotenv({
       path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
-      systemvars: true
+      systemvars: true,
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new CopyPlugin([{ from: "src/assets", to: "assets" }])
+    new CopyPlugin([{ from: "src/assets", to: "assets" }]),
   ],
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|ts)$/,
         exclude: /(node_modules)/,
-        use: ["babel-loader", "aframe-super-hot-loader"]
+        use: ["babel-loader", "aframe-super-hot-loader"],
       },
       {
         test: /\.html/,
@@ -47,24 +47,24 @@ module.exports = {
           {
             loader: "html-require-loader",
             options: {
-              root: path.resolve(__dirname, "src")
-            }
-          }
-        ]
+              root: path.resolve(__dirname, "src"),
+            },
+          },
+        ],
       },
       {
         test: /\.glsl/,
         exclude: /(node_modules)/,
-        loader: "webpack-glsl-loader"
+        loader: "webpack-glsl-loader",
       },
       {
         test: /\.png|\.jpg/,
         exclude: /(node_modules)/,
-        use: ["url-loader"]
-      }
-    ]
+        use: ["url-loader"],
+      },
+    ],
   },
   resolve: {
-    modules: [path.join(__dirname, "node_modules")]
-  }
+    modules: [path.join(__dirname, "node_modules")],
+  },
 };

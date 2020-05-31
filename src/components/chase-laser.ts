@@ -1,15 +1,62 @@
+import * as THREE from "three";
+import { Entity } from "aframe";
+
+import { CompDefinition } from "./type";
+import { SoundComponent } from "./sound";
+
+interface ChaseLaserState {
+  found: boolean;
+  head: Entity;
+
+  targetPosition: THREE.Vector3;
+  targetHeading: THREE.Vector3;
+  headDirection: THREE.Vector3;
+  wanderPoint: THREE.Vector3;
+  moving: boolean;
+
+  timeToHunt: number | null;
+  timeToLook: number | null;
+  timeToWander: number | null;
+  hasWanderPoint: boolean;
+}
+
+interface ChaseLaserData {
+  laser: Entity;
+}
+
+interface ChaseLaserMethods {
+  canSeeLaser: () => boolean;
+  search: (timestamp: number, delta: number) => void;
+  closeToPoint: (position: THREE.Vector3) => boolean;
+  admire: () => void;
+  hunt: (timestamp: number, delta: number) => void;
+  lookAtLaser: () => void;
+  handleNotMoving: () => void;
+  moveTowardLaser: (delta: number) => void;
+  handleMoving: () => void;
+  searchMove: (delta: number) => void;
+  searchHead: (delta: number) => void;
+  moveToward: (position: THREE.Vector3, speed: number, delta: number) => void;
+  setRandomWanderPointAlongGaze: () => void;
+  setRandomWanderPoint: () => void;
+}
+
 const SEARCH_SPEED = 0.5;
 const HUNT_SPEED = 1;
 
 const FORWARD_EULER = new THREE.Euler();
 
-AFRAME.registerComponent("chase-laser", {
+const ChaseLaser: CompDefinition<
+  ChaseLaserData,
+  ChaseLaserState,
+  ChaseLaserMethods
+> = {
   schema: {
     laser: { type: "selector" },
   },
   init() {
     this.found = false;
-    this.head = this.el.querySelector("#robot-head");
+    this.head = this.el.querySelector("#robot-head") as Entity;
 
     this.targetPosition = new THREE.Vector3();
     this.targetHeading = new THREE.Vector3();
@@ -89,7 +136,7 @@ AFRAME.registerComponent("chase-laser", {
       this.timeToWander = timestamp + random(3000, 6000);
       this.hasWanderPoint = false;
       this.handleNotMoving();
-    } else if (this.timeToWander < timestamp) {
+    } else if (this.timeToWander && this.timeToWander < timestamp) {
       // Wander
       this.searchMove(delta);
       this.handleMoving();
@@ -179,15 +226,20 @@ AFRAME.registerComponent("chase-laser", {
     if (this.moving) return;
     this.moving = true;
 
-    this.el.components["sound__motor"].playSound();
+    const motorSound = this.el.components["sound__motor"] as SoundComponent;
+    motorSound.playSound();
   },
   handleNotMoving() {
     if (!this.moving) return;
     this.moving = false;
-    this.el.components["sound__motor"].stopSound();
-  },
-});
 
-function random(min, max) {
+    const motorSound = this.el.components["sound__motor"] as SoundComponent;
+    motorSound.stopSound();
+  },
+};
+
+function random(min: number, max: number) {
   return Math.floor(min + Math.random() * (max - min));
 }
+
+AFRAME.registerComponent("chase-laser", ChaseLaser);
