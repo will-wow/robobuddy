@@ -1,5 +1,8 @@
 import * as THREE from "three";
 import { Entity } from "aframe";
+import { interpret } from "xstate";
+
+import { chaseMachine, ChaseBrain } from "../lib/brain";
 
 import { CompDefinition } from "./type";
 import { SoundComponent } from "./sound";
@@ -14,10 +17,16 @@ interface ChaseLaserState {
   wanderPoint: THREE.Vector3;
   moving: boolean;
 
+  /** Timestamp to start moving */
   timeToHunt: number | null;
+  /** Timestamp to start looking around */
   timeToLook: number | null;
+  /** Timestamp to start moving & searching */
   timeToWander: number | null;
+  /** Is there a current search point */
   hasWanderPoint: boolean;
+
+  brain: ChaseBrain;
 }
 
 interface ChaseLaserData {
@@ -64,40 +73,19 @@ const ChaseLaser: CompDefinition<
     this.wanderPoint = new THREE.Vector3();
     this.moving = false;
 
-    /** Timestamp to start moving */
     this.timeToHunt = null;
-
-    /** Timestamp to start looking around */
     this.timeToLook = null;
-
-    /** Timestamp to start moving & searching */
     this.timeToWander = null;
-
-    /** Is there a current search point */
     this.hasWanderPoint = false;
+    this.brain = interpret(chaseMachine({ el: this.el }));
   },
   tick(timestamp, delta) {
     if (!this.canSeeLaser()) {
-      this.found = false;
-      this.timeToHunt = null;
-
-      // If it can't see the laser, search for it.
-      this.search(timestamp, delta);
+      this.brain.send({ type: "NOT_FOUND" });
     } else if (this.closeToPoint(this.data.laser.object3D.position)) {
-      if (!this.found) {
-        this.el.emit("happy");
-        this.found = true;
-      }
-
-      this.timeToHunt = null;
-      this.timeToLook = null;
-      this.timeToWander = null;
-      this.hasWanderPoint = false;
-
-      // If it found the laser, stop and look at it.
-      this.admire();
+      this.brain.send({ type: "CAUGHT" });
     } else {
-      this.found = false;
+      this.brain.send({ type: "FOUND" });
 
       this.timeToLook = null;
       this.timeToWander = null;
@@ -106,17 +94,18 @@ const ChaseLaser: CompDefinition<
       // Otherwise, stalk the laser.
       this.hunt(timestamp, delta);
     }
+
+    if (this.brain.state.matches("search")) {
+    } else if (this.brain.state.matches("hunt")) {
+    } else if (this.brain.state.matches("admire")) {
+      this.admire();
+    }
   },
   admire() {
     this.lookAtLaser();
-
-    this.handleNotMoving();
   },
   hunt(timestamp, delta) {
     if (!this.timeToHunt) {
-      // Record when robot will start moving toward the dot.
-      this.timeToHunt = timestamp + random(1000, 2000);
-
       this.handleNotMoving();
     } else if (this.timeToHunt < timestamp) {
       // If it's been long enough, start moving towards the laser.
@@ -221,21 +210,7 @@ const ChaseLaser: CompDefinition<
   },
   setRandomWanderPoint() {
     this.wanderPoint.set(random(-5, 5), 0.1, random(-5, 5));
-  },
-  handleMoving() {
-    if (this.moving) return;
-    this.moving = true;
-
-    const motorSound = this.el.components["sound__motor"] as SoundComponent;
-    motorSound.playSound();
-  },
-  handleNotMoving() {
-    if (!this.moving) return;
-    this.moving = false;
-
-    const motorSound = this.el.components["sound__motor"] as SoundComponent;
-    motorSound.stopSound();
-  },
+  }
 };
 
 function random(min: number, max: number) {
