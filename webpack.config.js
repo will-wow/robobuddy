@@ -2,7 +2,7 @@ const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Dotenv = require("dotenv-webpack");
+// const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
     hotOnly: true,
     historyApiFallback: true,
   },
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "index.js",
@@ -25,10 +25,10 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
     }),
-    new Dotenv({
-      path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
-      systemvars: true,
-    }),
+    // new Dotenv({
+    //   path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
+    //   systemvars: true,
+    // }),
     new webpack.HotModuleReplacementPlugin(),
     new CopyPlugin([{ from: "src/assets", to: "assets" }]),
   ],
@@ -66,5 +66,6 @@ module.exports = {
   },
   resolve: {
     modules: [path.join(__dirname, "node_modules")],
+    extensions: [".ts", ".js", ".json"],
   },
 };
