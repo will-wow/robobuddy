@@ -1,9 +1,7 @@
-function requireAll(req) {
-  req.keys().forEach(req);
-}
-
-// Require all components.
-requireAll(require.context("./components/", true, /\.(js|ts)$/));
+import "./components/chase-laser";
+import "./components/laser-zone";
+import "./components/show-buttons";
+import "./components/trigger-action";
 
 import "aframe-extras";
 import "aframe-aabb-collider-component";

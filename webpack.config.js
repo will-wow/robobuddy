@@ -11,7 +11,7 @@ module.exports = {
     hotOnly: true,
     historyApiFallback: true,
   },
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "index.js",
@@ -66,5 +66,6 @@ module.exports = {
   },
   resolve: {
     modules: [path.join(__dirname, "node_modules")],
+    extensions: [".ts", ".js", ".json"],
   },
 };
