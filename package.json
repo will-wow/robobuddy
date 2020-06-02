@@ -8,6 +8,7 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.2.3",
@@ -45,8 +46,7 @@
     "aframe-state-component": "^6.8.0",
     "aframe-template-component": "^3.2.1",
     "axios": "^0.19.2",
-    "three": "^0.117.1",
-    "xstate": "^4.10.0"
+    "super-three": "^0.116.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
