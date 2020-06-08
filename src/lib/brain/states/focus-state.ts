@@ -1,10 +1,5 @@
 import { BaseState } from "./base-state";
-import {
-  canSeeLaser,
-  closeToPoint,
-  random,
-  lookAtLaser,
-} from "../helpers";
+import { canSeeLaser, closeToPoint, random, lookAtLaser } from "../helpers";
 import { State } from "../machine";
 
 export class FocusState extends BaseState {

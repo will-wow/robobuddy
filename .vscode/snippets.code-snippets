@@ -1,0 +1,18 @@
+{
+  "React Component": {
+    "scope": "typescriptreact",
+    "prefix": "comp",
+    "body": [
+      "import React from 'react';",
+      "",
+      "interface $1Props {",
+      "}",
+      "",
+      "const $1: React.FunctionComponent<$1Props> = ({}) => {",
+      "  return <div></div>;",
+      "};",
+      "",
+      "export default $1;"
+    ]
+  }
+}

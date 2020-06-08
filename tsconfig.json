@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": ".",
-    "strictPropertyInitialization": false
+    "jsx": "react",
+    "baseUrl": "src"
   },
   "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import { Entity } from "aframe";
 
-import { makeContext } from "../lib/brain/brain-context";
-import { Machine, State } from "../lib/brain/machine";
+import { makeContext } from "lib/brain/brain-context";
+import { Machine, State } from "lib/brain/machine";
 
 import { CompDefinition } from "./type";
 
