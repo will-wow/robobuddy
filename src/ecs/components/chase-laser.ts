@@ -31,6 +31,10 @@ const ChaseLaser: CompDefinition<ChaseLaserData, ChaseLaserState> = {
     this.head = this.el.querySelector("#robot-head") as Entity;
     this.light = this.head.querySelector("#state-light") as Entity;
 
+    this.el.setAttribute("position", "0 0.1 -3");
+    this.head.setAttribute("position", "0 0.4 0.15");
+    this.head.setAttribute("rotation", "15 0 0");
+
     const context = makeContext({
       el: this.el,
       head: this.head,

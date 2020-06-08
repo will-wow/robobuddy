@@ -11,11 +11,11 @@ interface UserProps {
 
 const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
   React.useEffect(() => {
-    document.addEventListener("mousedown", () => {
+    window.addEventListener("mousedown", () => {
       dispatch({ type: ACTIONS.pointStart });
     });
 
-    document.addEventListener("mouseup", () => {
+    window.addEventListener("mouseup", () => {
       dispatch({ type: ACTIONS.pointEnd });
     });
   }, [dispatch]);

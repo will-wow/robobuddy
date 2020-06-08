@@ -19,8 +19,13 @@ declare module "aframe-react" {
     events?: Record<string, EventHandler | EventHandler[]>;
   }
 
-  export class Entity<T extends EntityProps> extends React.Component<T> {}
-  export class Scene<T> extends Entity<T> {
+  export class Entity<
+    T extends EntityProps = EntityProps
+  > extends React.Component<T> {}
+
+  export class Scene<T extends EntityProps = EntityProps> extends Entity<T> {
     isScene: boolean;
+    pause: () => void;
+    play: () => void;
   }
 }

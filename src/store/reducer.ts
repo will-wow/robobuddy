@@ -1,14 +1,5 @@
 import { produce } from "immer";
 
-export interface AppState {
-  pointing: boolean;
-  controller: {
-    left: boolean;
-    right: boolean;
-  };
-  uiShown: boolean;
-}
-
 export enum ACTIONS {
   controllerConnectedRight = "controllerConnectedRight",
   controllerConnectedLeft = "controllerConnectedLeft",
@@ -16,6 +7,9 @@ export enum ACTIONS {
   hideUi = "hideUi",
   pointStart = "pointStart",
   pointEnd = "pointEnd",
+  play = "play",
+  sound = "sound",
+  loaded = "loaded",
 }
 
 export type AppAction =
@@ -24,7 +18,22 @@ export type AppAction =
   | { type: ACTIONS.showUi }
   | { type: ACTIONS.hideUi }
   | { type: ACTIONS.pointStart }
-  | { type: ACTIONS.pointEnd };
+  | { type: ACTIONS.pointEnd }
+  | { type: ACTIONS.play; data: boolean }
+  | { type: ACTIONS.sound; data: boolean }
+  | { type: ACTIONS.loaded };
+
+export interface AppState {
+  pointing: boolean;
+  controller: {
+    left: boolean;
+    right: boolean;
+  };
+  uiShown: boolean;
+  loaded: boolean;
+  sound: boolean;
+  play: boolean;
+}
 
 export const initialState: AppState = {
   pointing: false,
@@ -33,29 +42,51 @@ export const initialState: AppState = {
     right: false,
   },
   uiShown: false,
-};
-
-const handlers = {
-  [ACTIONS.pointStart](state: any) {
-    state.pointing = true;
-  },
-  [ACTIONS.pointEnd](state: any) {
-    state.pointing = false;
-  },
-  [ACTIONS.controllerConnectedRight](state: any) {
-    state.controller.right = true;
-  },
-  [ACTIONS.controllerConnectedLeft](state: any) {
-    state.controller.left = true;
-  },
-  [ACTIONS.showUi](state: any) {
-    state.uiShown = true;
-  },
-  [ACTIONS.hideUi](state: any) {
-    state.uiShown = false;
-  },
+  loaded: false,
+  sound: false,
+  play: false,
 };
 
 export const reducer = produce((state: AppState, action: AppAction) => {
-  handlers[action.type](state);
+  switch (action.type) {
+    case ACTIONS.pointStart: {
+      state.pointing = true;
+      break;
+    }
+    case ACTIONS.pointEnd: {
+      state.pointing = false;
+      break;
+    }
+    case ACTIONS.controllerConnectedRight: {
+      state.controller.right = true;
+      break;
+    }
+    case ACTIONS.controllerConnectedLeft: {
+      state.controller.left = true;
+      break;
+    }
+    case ACTIONS.showUi: {
+      state.uiShown = true;
+      break;
+    }
+    case ACTIONS.hideUi: {
+      state.uiShown = false;
+      break;
+    }
+    case ACTIONS.sound: {
+      state.sound = action.data;
+      break;
+    }
+    case ACTIONS.play: {
+      state.play = action.data;
+      break;
+    }
+    case ACTIONS.loaded: {
+      state.loaded = true;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 });
