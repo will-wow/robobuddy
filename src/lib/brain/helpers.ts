@@ -1,7 +1,8 @@
 import { Vector3 } from "three";
 
+import { SoundComponent } from "ecs/components/sound";
+
 import { BrainContext } from "./brain-context";
-import { SoundComponent } from "src/components/sound";
 
 /** Check if the head is looking at the laser. */
 export const canSeeLaser = (context: BrainContext) => {

@@ -1,4 +1,4 @@
-import { Component, DetailEvent, Entity, ComponentDefinition } from "aframe";
+import { DetailEvent, Entity } from "aframe";
 
 import { RaycasterComponent } from "./raycaster";
 import { CompDefinition } from "./type";
@@ -31,7 +31,7 @@ export const LaserZoneComponent: CompDefinition<
       }
     },
 
-    "raycaster-intersected-cleared"()  {
+    "raycaster-intersected-cleared"() {
       this.intersectingRaycaster = null;
       this.data.laser.setAttribute("visible", false);
     },

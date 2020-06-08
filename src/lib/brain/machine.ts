@@ -32,7 +32,10 @@ export class Machine {
       [State.admire]: new AdmireState(context, this.setState),
     };
 
-    this.setState(State.search, this.time);
+    // Initialize state.
+    this.stateName = State.search;
+    this.state = this.states[this.stateName];
+    this.state.enter(this.time);
   }
 
   tick(delta: number): void {

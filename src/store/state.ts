@@ -1,3 +1,9 @@
+declare global {
+  namespace AFRAME {
+    function registerState(opts: any): void;
+  }
+}
+
 export const ACTIONS = {
   controllerConnectedRight: "controllerConnectedRight",
   controllerConnectedLeft: "controllerConnectedLeft",
@@ -17,33 +23,23 @@ AFRAME.registerState({
     uiShown: false,
   },
   handlers: {
-    [ACTIONS.pointStart](state) {
+    [ACTIONS.pointStart](state: any) {
       state.pointing = true;
     },
-    [ACTIONS.pointEnd](state) {
+    [ACTIONS.pointEnd](state: any) {
       state.pointing = false;
     },
-    [ACTIONS.controllerConnectedRight](state) {
+    [ACTIONS.controllerConnectedRight](state: any) {
       state.controller.right = true;
     },
-    [ACTIONS.controllerConnectedLeft](state) {
+    [ACTIONS.controllerConnectedLeft](state: any) {
       state.controller.left = true;
     },
-    [ACTIONS.showUi](state) {
+    [ACTIONS.showUi](state: any) {
       state.uiShown = true;
     },
-    [ACTIONS.hideUi](state) {
+    [ACTIONS.hideUi](state: any) {
       state.uiShown = false;
     },
   },
 });
-
-// TODO: make this a method once computeState is fixed https://github.com/supermedium/superframe/issues/240
-function computeState(state, _payload) {
-  // Calculate user laser color.
-  state.userLaserColor =
-    !state.play && state.pointing ? LASER_COLOR.red : LASER_COLOR.blue;
-
-  // Show speaker laser.
-  state.speakerLaser = (state.play || state.record) && state.pointing;
-}

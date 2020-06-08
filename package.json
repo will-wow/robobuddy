@@ -1,59 +1,67 @@
 {
-  "name": "aframe",
-  "version": "0.0.0",
-  "main": "index.js",
+  "name": "robobuddy",
+  "version": "0.1.0",
   "author": "Will Ockelmann-Wagner",
   "license": "MIT",
-  "private": false,
-  "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.3",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-typescript": "^7.9.0",
-    "@types/jest": "^25.2.3",
-    "aframe-super-hot-html-loader": "2.1.0",
-    "aframe-super-hot-loader": "1.7.0",
-    "angle": "^0.9.1",
-    "autoprefixer": "^7.2.3",
-    "babel-jest": "^26.0.1",
-    "babel-loader": "^8.0.5",
-    "babel-minify-webpack-plugin": "^0.3.1",
-    "copy-webpack-plugin": "^5.1.1",
-    "cross-env": "4.0.0",
-    "dotenv-webpack": "^1.7.0",
-    "html-loader": "^1.1.0",
-    "html-require-loader": "ngokevin/html-require-loader",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^26.0.1",
-    "json-loader": "^0.5.7",
-    "prettier": "^1.19.1",
-    "shx": "^0.2.2",
-    "surge": "^0.21.3",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.29.5",
-    "webpack-cli": "3.2.3",
-    "webpack-dev-server": "^3.2.0",
-    "webpack-glsl-loader": "^1.0.1",
-    "webpack-sources": "1.0.1"
-  },
+  "private": true,
   "dependencies": {
     "@types/aframe": "^1.0.1",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
     "aframe-aabb-collider-component": "^3.2.0",
     "aframe-environment-component": "^2.0.0",
     "aframe-extras": "^6.1.0",
     "aframe-layout-component": "^5.3.0",
+    "aframe-react": "^4.4.0",
     "aframe-state-component": "^6.8.0",
     "aframe-template-component": "^3.2.1",
     "axios": "^0.19.2",
-    "super-three": "^0.116.0"
+    "immer": "^6.0.9",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "super-three": "^0.116.0",
+    "typescript": "~3.7.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^24.0.0",
+    "cross-env": "^7.0.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "surge": "^0.21.3"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
-    "deploy": "surge ./dist https://robobuddy.surge.sh",
-    "lint": "",
-    "format": "prettier --write './**/*.{js,html,css,md,json}'",
-    "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot-only --inline --port 3001",
-    "test": "jest"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "npm-run-all lint:*",
+    "lint:prettier": "cross-env prettier --check './**/*.{ts,tsx,html,md,json}'",
+    "format": "npm-run-all format:*",
+    "format:prettier": "cross-env prettier --write './**/*.{ts,tsx,html,md,json}'",
+    "deploy": "surge ./dist https://robobuddy.surge.sh"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

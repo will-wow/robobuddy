@@ -13,7 +13,6 @@ import {
 import { State } from "../machine";
 
 const SEARCH_SPEED = 0.5;
-const FORWARD_EULER = new THREE.Euler();
 
 export class WanderState extends BaseState {
   wanderPoint = new THREE.Vector3();
