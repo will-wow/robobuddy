@@ -1,24 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-import { ACTIONS, AppAction, AppState } from "store/reducer";
+import { BaseControlPanelProps } from "./BaseControlPanel";
 
-interface ControlPanelWebProps {
-  state: AppState;
-  dispatch: React.Dispatch<AppAction>;
-}
-
-const ControlPanelWeb: React.FunctionComponent<ControlPanelWebProps> = ({
+const ControlPanelWeb: React.FunctionComponent<BaseControlPanelProps> = ({
   state,
-  dispatch,
+  onSound,
 }) => {
   return (
     <ControlPanelWrapper onMouseDown={(event) => event.stopPropagation()}>
-      <Button
-        color="orange"
-        onClick={() => dispatch({ type: ACTIONS.sound, data: !state.sound })}
-      >
-        Sound
+      <Button color="orange" onClick={onSound}>
+        {state.sound ? "Sound" : "Sound Off"}
       </Button>
 
       {/* <Button

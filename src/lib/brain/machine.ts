@@ -5,6 +5,8 @@ import { BrainContext } from "./brain-context";
 import { SearchState } from "./states/search-state";
 import { FocusState } from "./states/focus-state";
 import { WanderState } from "./states/wander-state";
+import { RecallState } from "./states/recall-state";
+import { PetState } from "./states/pet-state";
 
 export enum State {
   search = "search",
@@ -12,6 +14,8 @@ export enum State {
   focus = "focus",
   hunt = "hunt",
   admire = "admire",
+  recall = "recall",
+  pet = "pet",
 }
 
 export class Machine {
@@ -30,6 +34,8 @@ export class Machine {
       [State.focus]: new FocusState(context, this.setState),
       [State.hunt]: new HuntState(context, this.setState),
       [State.admire]: new AdmireState(context, this.setState),
+      [State.recall]: new RecallState(context, this.setState),
+      [State.pet]: new PetState(context, this.setState),
     };
 
     // Initialize state.
@@ -57,5 +63,9 @@ export class Machine {
 
     // Enter new state.
     this.state.enter(timestamp);
+  }
+
+  recall(timestamp: number) {
+    this.state.recall(timestamp);
   }
 }

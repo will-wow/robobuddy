@@ -17,6 +17,7 @@ declare module "aframe-react" {
     className?: string;
     children?: React.ReactNode;
     events?: Record<string, EventHandler | EventHandler[]>;
+    mixin?: string;
   }
 
   export class Entity<

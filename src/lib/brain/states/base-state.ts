@@ -12,4 +12,8 @@ export class BaseState {
   exit(timestamp: number) {}
 
   tick(timestamp: number, delta: number) {}
+
+  recall(timestamp: number) {
+    this.setState(State.recall, timestamp);
+  }
 }
