@@ -21,9 +21,9 @@ export enum State {
 export class Machine {
   time = 0;
   stateName: State;
+  state: BaseState;
 
   private states: Record<State, BaseState>;
-  private state: BaseState;
 
   constructor(context: BrainContext) {
     this.setState = this.setState.bind(this);
@@ -53,7 +53,11 @@ export class Machine {
     this.state.tick(this.time, cappedDelta);
   }
 
-  setState(state: State, timestamp: number): void {
+  recall(): void {
+    this.state.recall(this.time);
+  }
+
+  private setState(state: State, timestamp: number): void {
     // Exit old state.
     this.state?.exit(timestamp);
 
@@ -63,9 +67,5 @@ export class Machine {
 
     // Enter new state.
     this.state.enter(timestamp);
-  }
-
-  recall(timestamp: number) {
-    this.state.recall(timestamp);
   }
 }

@@ -50,7 +50,7 @@ export class WanderState extends BaseState {
     // Send point out in direction of head.
     this.wanderPoint
       .copy(this.context.el.object3D.position)
-      .addScaledVector(this.context.headDirection, random(1, 3));
+      .addScaledVector(this.context.headDirection, random(1.5, 3));
 
     faceToward(this.context, this.wanderPoint);
   }
