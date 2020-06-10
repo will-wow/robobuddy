@@ -17,8 +17,7 @@ export class HuntState extends BaseState {
   targetPosition = new Vector3();
 
   enter() {
-    this.setTargetPosition();
-    faceToward(this.context, this.targetPosition);
+    faceToward(this.context, this.laserPosition());
 
     startMotorSound(this.context);
   }
@@ -40,14 +39,12 @@ export class HuntState extends BaseState {
   }
 
   /** Get the world position of the laser target, with 0.1 to match the robot height. */
-  private setTargetPosition() {
-    this.targetPosition.copy(this.context.laser.object3D.position).setY(0.1);
+  private laserPosition(): Vector3 {
+    return this.context.laser.object3D.position;
   }
 
   private moveTowardLaser(delta: number) {
-    this.setTargetPosition();
-
     // Move towards laser
-    moveToward(this.context, this.targetPosition, HUNT_SPEED, delta);
+    moveToward(this.context, this.laserPosition(), HUNT_SPEED, delta);
   }
 }

@@ -31,13 +31,16 @@ export const lookAtLaser = ({ head, laser }: BrainContext) => {
 /** Is the robot close to a point? */
 export const closeToPoint = (
   context: BrainContext,
-  position: Vector3
+  position: Vector3,
+  distance: number = 1
 ): boolean => {
-  return context.el.object3D.position.distanceTo(position) < 1;
+  return context.el.object3D.position.distanceTo(position) < distance;
 };
 
 export const faceToward = (context: BrainContext, position: Vector3) => {
-  context.el.object3D.lookAt(position);
+  const levelPosition = positionToPlane(context, position);
+
+  context.el.object3D.lookAt(levelPosition);
   context.head.object3D.lookAt(position);
 };
 
@@ -47,7 +50,8 @@ export const moveToward = (
   speed: number,
   delta: number
 ) => {
-  context.el.object3D.lookAt(position);
+  const levelPosition = positionToPlane(context, position);
+  context.el.object3D.lookAt(levelPosition);
 
   // Move forward
   context.el.object3D.translateZ(speed * (delta / 1000));
@@ -66,4 +70,15 @@ export const stopMotorSound = (context: BrainContext) => {
 /** Pick a random integer. */
 export const random = (min: number, max: number) => {
   return Math.floor(min + Math.random() * (max - min));
+};
+
+export const positionToPlane = (
+  context: BrainContext,
+  position: Vector3
+): Vector3 => {
+  return context.targetPosition.copy(position).setY(0.1);
+};
+
+export const getPlayerPosition = (context: BrainContext): Vector3 => {
+  return context.player.object3D.getWorldPosition(context.playerPosition);
 };

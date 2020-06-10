@@ -6,6 +6,7 @@ import { BaseControlPanelProps } from "./BaseControlPanel";
 const ControlPanelWeb: React.FunctionComponent<BaseControlPanelProps> = ({
   state,
   onSound,
+  onRecall,
 }) => {
   return (
     <ControlPanelWrapper onMouseDown={(event) => event.stopPropagation()}>
@@ -13,20 +14,9 @@ const ControlPanelWeb: React.FunctionComponent<BaseControlPanelProps> = ({
         {state.sound ? "Sound" : "Sound Off"}
       </Button>
 
-      {/* <Button
-        color="red"
-        // TODO: recall
-        // onClick={() => dispatch({ type: ACTIONS.sound, data: !state.sound })}
-      >
+      <Button color="red" onClick={onRecall}>
         Come here!
       </Button>
-
-      <Button
-        color="blue"
-        onClick={() => dispatch({ type: ACTIONS.play, data: !state.play })}
-      >
-        {state.play ? "Sleep" : "Wake up"}
-      </Button> */}
     </ControlPanelWrapper>
   );
 };

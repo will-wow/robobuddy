@@ -1,4 +1,5 @@
-import React from "react";
+import React, { MutableRefObject } from "react";
+import { Entity as AframeEntity } from "aframe";
 import { Entity } from "aframe-react";
 
 import Wheel from "./Wheel";
@@ -7,13 +8,16 @@ import { renderData } from "lib/entity";
 
 interface RobotProps {
   state: AppState;
+  robotRef: MutableRefObject<AframeEntity | null>;
 }
 
-const Robot: React.FunctionComponent<RobotProps> = ({ state }) => {
+const Robot: React.FunctionComponent<RobotProps> = ({ state, robotRef }) => {
   const volume = state.sound ? 1 : 0;
   return (
     <Entity
       id="robot"
+      _ref={(entity: any) => (robotRef.current = entity)}
+      data-aabb-collider-dynamic="true"
       chase-laser="laser: #laser-point"
       sound__happy={renderData({
         src: "#happy",

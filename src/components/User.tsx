@@ -45,6 +45,7 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
       <Entity
         id="leftHand"
         tracked-controls="hand: left"
+        aabb-collider="objects: #robot, .action-button:not(.hidden)"
         visible={state.controller.left}
         ui={renderData({ uiShown: state.uiShown })}
         events={leftHandEvents}
@@ -71,6 +72,7 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
         id="rightHand"
         tracked-controls="hand: right"
         laser-controls=""
+        aabb-collider
         raycaster="objects: .floor; showLine: true"
         line="color: red"
         visible={state.controller.right}

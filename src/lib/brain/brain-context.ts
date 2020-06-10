@@ -9,8 +9,11 @@ export interface BrainContextParams {
 }
 
 export interface BrainContext extends BrainContextParams {
+  playerPosition: Vector3;
+  targetPosition: Vector3;
   targetHeading: Vector3;
   headDirection: Vector3;
+  petting: boolean;
 }
 
 export const makeContext = ({
@@ -19,6 +22,8 @@ export const makeContext = ({
   laser,
   player,
 }: BrainContextParams): BrainContext => {
+  const playerPosition = new Vector3();
+  const targetPosition = new Vector3();
   const targetHeading = new Vector3();
   const headDirection = new Vector3();
 
@@ -27,7 +32,10 @@ export const makeContext = ({
     head,
     laser,
     player,
+    playerPosition,
+    targetPosition,
     targetHeading,
     headDirection,
+    petting: false,
   };
 };
