@@ -2,16 +2,20 @@ import React from "react";
 import { Entity } from "aframe-react";
 
 import { AppState, AppAction, ACTIONS } from "store/reducer";
-import { renderData } from "lib/entity";
 
 import ControlPanel from "./control-panel/ControlPanel";
 
 interface UserProps {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
+  onRecall(): void;
 }
 
-const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
+const User: React.FunctionComponent<UserProps> = ({
+  state,
+  dispatch,
+  onRecall,
+}) => {
   React.useEffect(() => {
     window.addEventListener("mousedown", () => {
       dispatch({ type: ACTIONS.pointStart });
@@ -24,8 +28,11 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
 
   const leftHandEvents = React.useMemo(
     () => ({
-      controllerconnected: () =>
-        dispatch({ type: ACTIONS.controllerConnectedLeft }),
+      controllerconnected: () => {
+        dispatch({ type: ACTIONS.controllerConnectedLeft });
+      },
+      showUi: () => dispatch({ type: ACTIONS.showUi }),
+      hideUi: () => dispatch({ type: ACTIONS.hideUi }),
     }),
     [dispatch]
   );
@@ -43,62 +50,75 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
   return (
     <>
       <Entity
-        id="leftHand"
-        tracked-controls="hand: left"
-        aabb-collider="objects: #robot, .action-button:not(.hidden)"
-        visible={state.controller.left}
-        ui={renderData({ uiShown: state.uiShown })}
-        events={leftHandEvents}
-      >
-        <a-entity
-          position="0.3 0 0"
-          rotation="0 0 -90"
-          show-buttons={state.uiShown}
-        >
-          <ControlPanel vr={true} state={state} dispatch={dispatch} />
-        </a-entity>
-      </Entity>
-
-      <a-entity
         id="fixed-control-panel"
         position="-1 1.6"
         rotation="0 90 0"
         show-buttons={!state.controller.left}
       >
-        <ControlPanel vr={true} state={state} dispatch={dispatch} />
-      </a-entity>
+        <ControlPanel
+          vr
+          state={state}
+          dispatch={dispatch}
+          onRecall={onRecall}
+        />
+      </Entity>
+
+      <Entity
+        id="leftHand"
+        hand-controls="hand: left"
+        visible={state.controller.left}
+        control-panel-vr={{ uiShown: state.uiShown }}
+        events={leftHandEvents}
+      >
+        <Entity
+          position="0.3 0 0"
+          rotation="0 0 -90"
+          show-buttons={state.uiShown}
+        >
+          <ControlPanel
+            vr
+            state={state}
+            dispatch={dispatch}
+            onRecall={onRecall}
+          />
+        </Entity>
+      </Entity>
 
       <Entity
         id="rightHand"
-        tracked-controls="hand: right"
+        hand-controls="hand: right"
         laser-controls=""
-        aabb-collider
-        raycaster="objects: .floor; showLine: true"
-        line="color: red"
+        aabb-collider="objects: #robot, .touch-button:not(.hidden)"
+        raycaster="objects: .floor, .action-button:not(.hidden); showLine: false"
         visible={state.controller.right}
         events={rightHandEvents}
       ></Entity>
 
-      <a-entity id="rig" movement-controls="">
-        <a-entity
+      <Entity id="rig" movement-controls="">
+        <Entity
           id="player"
           camera=""
           position="0 1.6 0"
-          look-controls="pointerLockEnabled: true"
-          raycaster={renderData({
+          look-controls={{ pointerLockEnabled: true, enabled: true }}
+          raycaster={{
             objects: ".floor",
             enabled: !state.controller.right,
-          })}
-        ></a-entity>
-      </a-entity>
+          }}
+          events={{
+            pointerLocked: () => dispatch({ type: ACTIONS.play, data: true }),
+            pointerUnlocked: () =>
+              dispatch({ type: ACTIONS.play, data: false }),
+          }}
+        ></Entity>
+      </Entity>
 
-      <a-entity
+      <Entity
         id="laser-point"
         position="-3 0 -5"
         geometry="primitive: cylinder; radius: 0.1; height: 0.01"
         material="color: red"
         visible={state.pointing}
-      ></a-entity>
+      ></Entity>
     </>
   );
 };

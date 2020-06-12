@@ -7,6 +7,7 @@ import { BaseControlPanelProps } from "./BaseControlPanel";
 const ControlPanelVr: React.FunctionComponent<BaseControlPanelProps> = ({
   state,
   onSound,
+  onRecall,
 }) => {
   return (
     <Entity
@@ -19,7 +20,11 @@ const ControlPanelVr: React.FunctionComponent<BaseControlPanelProps> = ({
         layout="type: line; plane: xy; margin: 0.25; align: center"
       >
         <VrButton color="orange" onClick={onSound}>
-          {state.sound ? "Sound" : "Sound Off"}
+          {state.sound ? "Sound On" : "Muted"}
+        </VrButton>
+
+        <VrButton color="red" onClick={onRecall}>
+          Come here!
         </VrButton>
       </Entity>
     </Entity>

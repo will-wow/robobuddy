@@ -1,4 +1,3 @@
-
 import { CompDefinition } from "./type";
 
 export const ShowButtonsComponent: CompDefinition<any> = {
@@ -9,13 +8,15 @@ export const ShowButtonsComponent: CompDefinition<any> = {
 
     this.el.object3D.visible = visible;
 
-    this.el.querySelectorAll(".action-button").forEach((button) => {
-      if (visible) {
-        button.classList.remove("hidden");
-      } else {
-        button.classList.add("hidden");
-      }
-    });
+    this.el
+      .querySelectorAll(".action-button, .touch-button")
+      .forEach((button) => {
+        if (visible) {
+          button.classList.remove("hidden");
+        } else {
+          button.classList.add("hidden");
+        }
+      });
   },
 };
 

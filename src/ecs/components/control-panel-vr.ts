@@ -1,7 +1,5 @@
 import * as THREE from "three";
 
-import { emit } from "lib/action";
-
 import { CompDefinition } from "./type";
 
 interface ControlPanelVrState {
@@ -30,9 +28,9 @@ const ControlPanelVr: CompDefinition<
     const isUpsideDown = this.isUpsideDown();
 
     if (isUpsideDown && !this.data.uiShown) {
-      emit("showUi");
+      this.el.emit("showUi");
     } else if (!isUpsideDown && this.data.uiShown) {
-      emit("hideUi");
+      this.el.emit("hideUi");
     }
   },
   isUpsideDown() {

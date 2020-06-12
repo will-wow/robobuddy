@@ -21,22 +21,31 @@ const VrButton: React.FunctionComponent<VrButtonProps> = ({
   return (
     <Entity
       class="action-button"
-      mixin="flat-button"
-      trigger-action__click="action: <%= @action %>"
-      color-switch={renderData({
+      geometry="primitive: box; height: 0.1; width: 0.2; depth: 0.01"
+      material="transparent: true; opacity: 0.3"
+      color-switch={{
+        component: "material",
         on: isActive,
         onColor: color,
         offColor: inactiveColor || color,
-      })}
+      }}
+      events={{
+        click: onClick,
+      }}
     >
       <Entity
-        mixin="button-text"
-        text={renderData({ value: children })}
+        className="action-button__text"
+        text={{
+          color: "#dfe2f2",
+          align: "center",
+          value: children,
+        }}
       ></Entity>
 
       <Entity
         class="touch-button"
-        mixin="touch-target"
+        geometry="primitive: box; height: 0.01; width: 0.01; depth: 0.009"
+        material="transparent: true; opacity: 0"
         data-aabb-collider-dynamic="true"
         events={{
           hitclosest: onClick,

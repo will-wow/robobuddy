@@ -47,9 +47,9 @@ function AppScene() {
 
         <World state={state} />
         <Robot state={state} robotRef={robotRef} />
-        <User state={state} dispatch={dispatch} />
+        <User state={state} dispatch={dispatch} onRecall={recall} />
 
-        {state.loaded && (
+        {state.loaded && !state.play && (
           <ControlPanel
             vr={false}
             state={state}

@@ -9,7 +9,7 @@ interface ControlPanelProps {
   vr: boolean;
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
-  onRecall?: () => void;
+  onRecall(): void;
 }
 
 const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({
@@ -18,13 +18,16 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = ({
   dispatch,
   onRecall = () => {},
 }) => {
-  const handleSoundClick = () =>
+  const handlePlay = () => dispatch({ type: ACTIONS.play, data: !state.play });
+
+  const handleSound = () =>
     dispatch({ type: ACTIONS.sound, data: !state.sound });
 
   const props: BaseControlPanelProps = {
     state,
     onRecall,
-    onSound: handleSoundClick,
+    onPlay: handlePlay,
+    onSound: handleSound,
   };
 
   if (vr && state.vr) {
