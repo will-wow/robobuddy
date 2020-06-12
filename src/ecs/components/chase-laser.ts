@@ -1,18 +1,22 @@
 import { Entity } from "aframe";
 
-import { makeContext } from "lib/brain/brain-context";
+import { makeContext, BrainContext } from "lib/brain/brain-context";
 import { Machine, State } from "lib/brain/machine";
 
 import { CompDefinition } from "./type";
 
 interface ChaseLaserState {
   machine: Machine;
-  head: Entity;
   light: Entity;
+  context: BrainContext;
 }
 
 interface ChaseLaserData {
   laser: Entity;
+}
+
+interface ChaseLaserMethods {
+  recall: () => void;
 }
 
 const stateColor = {
@@ -21,27 +25,44 @@ const stateColor = {
   [State.focus]: "orange",
   [State.hunt]: "red",
   [State.admire]: "blue",
+  [State.recall]: "purple",
+  [State.pet]: "pink",
 };
 
-const ChaseLaser: CompDefinition<ChaseLaserData, ChaseLaserState> = {
+export const ChaseLaser: CompDefinition<
+  ChaseLaserData,
+  ChaseLaserState,
+  ChaseLaserMethods
+> = {
   schema: {
     laser: { type: "selector" },
   },
+  events: {
+    hitclosest() {
+      this.context.petting = true;
+    },
+    hitclosestclear() {
+      this.context.petting = false;
+    },
+  },
   init() {
-    this.head = this.el.querySelector("#robot-head") as Entity;
-    this.light = this.head.querySelector("#state-light") as Entity;
+    const head = this.el.querySelector("#robot-head") as Entity;
+    const player = this.el.sceneEl?.querySelector("#player") as Entity;
+
+    this.light = head.querySelector("#state-light") as Entity;
 
     this.el.setAttribute("position", "0 0.1 -3");
-    this.head.setAttribute("position", "0 0.4 0.15");
-    this.head.setAttribute("rotation", "15 0 0");
+    head.setAttribute("position", "0 0.4 0.15");
+    head.setAttribute("rotation", "15 0 0");
 
-    const context = makeContext({
+    this.context = makeContext({
+      head,
+      player,
       el: this.el,
-      head: this.head,
       laser: this.data.laser,
     });
 
-    this.machine = new Machine(context);
+    this.machine = new Machine(this.context);
   },
   tick(_timestamp, delta) {
     this.machine.tick(delta);
@@ -49,6 +70,9 @@ const ChaseLaser: CompDefinition<ChaseLaserData, ChaseLaserState> = {
     const color = stateColor[this.machine.stateName];
     this.light.setAttribute("light", { color });
     this.light.setAttribute("material", { color });
+  },
+  recall() {
+    this.machine.recall();
   },
 };
 

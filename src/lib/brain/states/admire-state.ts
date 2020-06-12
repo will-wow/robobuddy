@@ -18,4 +18,6 @@ export class AdmireState extends BaseState {
       lookAtLaser(this.context);
     }
   }
+
+  recall(timestamp: number) {}
 }

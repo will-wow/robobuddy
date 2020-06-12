@@ -10,6 +10,7 @@ export enum ACTIONS {
   play = "play",
   sound = "sound",
   loaded = "loaded",
+  vr = "vr",
 }
 
 export type AppAction =
@@ -21,7 +22,8 @@ export type AppAction =
   | { type: ACTIONS.pointEnd }
   | { type: ACTIONS.play; data: boolean }
   | { type: ACTIONS.sound; data: boolean }
-  | { type: ACTIONS.loaded };
+  | { type: ACTIONS.loaded }
+  | { type: ACTIONS.vr; data: boolean };
 
 export interface AppState {
   pointing: boolean;
@@ -33,6 +35,7 @@ export interface AppState {
   loaded: boolean;
   sound: boolean;
   play: boolean;
+  vr: boolean;
 }
 
 export const initialState: AppState = {
@@ -45,6 +48,7 @@ export const initialState: AppState = {
   loaded: false,
   sound: false,
   play: false,
+  vr: false,
 };
 
 export const reducer = produce((state: AppState, action: AppAction) => {
@@ -79,6 +83,10 @@ export const reducer = produce((state: AppState, action: AppAction) => {
     }
     case ACTIONS.play: {
       state.play = action.data;
+      break;
+    }
+    case ACTIONS.vr: {
+      state.vr = action.data;
       break;
     }
     case ACTIONS.loaded: {

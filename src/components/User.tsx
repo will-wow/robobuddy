@@ -4,6 +4,8 @@ import { Entity } from "aframe-react";
 import { AppState, AppAction, ACTIONS } from "store/reducer";
 import { renderData } from "lib/entity";
 
+import ControlPanel from "./control-panel/ControlPanel";
+
 interface UserProps {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
@@ -43,6 +45,7 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
       <Entity
         id="leftHand"
         tracked-controls="hand: left"
+        aabb-collider="objects: #robot, .action-button:not(.hidden)"
         visible={state.controller.left}
         ui={renderData({ uiShown: state.uiShown })}
         events={leftHandEvents}
@@ -51,7 +54,9 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
           position="0.3 0 0"
           rotation="0 0 -90"
           show-buttons={state.uiShown}
-        ></a-entity>
+        >
+          <ControlPanel vr={true} state={state} dispatch={dispatch} />
+        </a-entity>
       </Entity>
 
       <a-entity
@@ -59,12 +64,15 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
         position="-1 1.6"
         rotation="0 90 0"
         show-buttons={!state.controller.left}
-      ></a-entity>
+      >
+        <ControlPanel vr={true} state={state} dispatch={dispatch} />
+      </a-entity>
 
       <Entity
         id="rightHand"
         tracked-controls="hand: right"
         laser-controls=""
+        aabb-collider
         raycaster="objects: .floor; showLine: true"
         line="color: red"
         visible={state.controller.right}
@@ -73,6 +81,7 @@ const User: React.FunctionComponent<UserProps> = ({ state, dispatch }) => {
 
       <a-entity id="rig" movement-controls="">
         <a-entity
+          id="player"
           camera=""
           position="0 1.6 0"
           look-controls="pointerLockEnabled: true"

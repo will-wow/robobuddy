@@ -7,9 +7,13 @@ export class BaseState {
     public setState: (state: State, timestamp: number) => void
   ) {}
 
-  enter(timestamp: number) {}
+  enter(timestamp: number): void {}
 
-  exit(timestamp: number) {}
+  exit(timestamp: number): void {}
 
-  tick(timestamp: number, delta: number) {}
+  tick(timestamp: number, delta: number): void {}
+
+  recall(timestamp: number): void {
+    this.setState(State.recall, timestamp);
+  }
 }
