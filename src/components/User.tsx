@@ -99,15 +99,15 @@ const User: React.FunctionComponent<UserProps> = ({
           id="player"
           camera=""
           position="0 1.6 0"
-          look-controls={{ pointerLockEnabled: true, enabled: true }}
+          look-controls={{ pointerLockEnabled: true, enabled: state.play }}
+          pointer-lock={{ play: state.play }}
           raycaster={{
             objects: ".floor",
             enabled: !state.controller.right,
           }}
           events={{
-            pointerLocked: () => dispatch({ type: ACTIONS.play, data: true }),
-            pointerUnlocked: () =>
-              dispatch({ type: ACTIONS.play, data: false }),
+            "close-ui": () => dispatch({ type: ACTIONS.play, data: true }),
+            "open-ui": () => dispatch({ type: ACTIONS.play, data: false }),
           }}
         ></Entity>
       </Entity>

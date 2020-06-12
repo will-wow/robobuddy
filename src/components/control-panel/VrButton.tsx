@@ -1,8 +1,6 @@
 import React from "react";
 import { Entity } from "aframe-react";
 
-import { renderData } from "lib/entity";
-
 interface VrButtonProps {
   isActive?: boolean;
   children: string;

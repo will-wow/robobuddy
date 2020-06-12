@@ -49,7 +49,7 @@
     "lint:prettier": "cross-env prettier --check './**/*.{ts,tsx,html,md,json}'",
     "format": "npm-run-all format:*",
     "format:prettier": "cross-env prettier --write './**/*.{ts,tsx,html,md,json}'",
-    "deploy": "surge ./dist https://robobuddy.surge.sh"
+    "deploy": "surge ./build https://robobuddy.surge.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
