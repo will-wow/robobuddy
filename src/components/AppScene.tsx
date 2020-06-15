@@ -11,6 +11,7 @@ import Robot from "./robot/Robot";
 import World from "./World";
 import User from "./User";
 import ControlPanel from "./control-panel/ControlPanel";
+import LaserPointer from "./control-panel/LaserPointer";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -50,12 +51,16 @@ function AppScene() {
         <User state={state} dispatch={dispatch} onRecall={recall} />
 
         {state.loaded && !state.play && (
-          <ControlPanel
-            vr={false}
-            state={state}
-            dispatch={dispatch}
-            onRecall={recall}
-          />
+          <>
+            <ControlPanel
+              vr={false}
+              state={state}
+              dispatch={dispatch}
+              onRecall={recall}
+            />
+
+            <LaserPointer dispatch={dispatch} state={state} />
+          </>
         )}
       </Scene>
     </>
