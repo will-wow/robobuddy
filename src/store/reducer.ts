@@ -10,6 +10,7 @@ export enum ACTIONS {
   play = "play",
   sound = "sound",
   loaded = "loaded",
+  ar = "ar",
   vr = "vr",
 }
 
@@ -23,6 +24,7 @@ export type AppAction =
   | { type: ACTIONS.play; data: boolean }
   | { type: ACTIONS.sound; data: boolean }
   | { type: ACTIONS.loaded }
+  | { type: ACTIONS.ar; data: boolean }
   | { type: ACTIONS.vr; data: boolean };
 
 export interface AppState {
@@ -35,6 +37,7 @@ export interface AppState {
   loaded: boolean;
   sound: boolean;
   play: boolean;
+  ar: boolean;
   vr: boolean;
 }
 
@@ -48,6 +51,7 @@ export const initialState: AppState = {
   loaded: false,
   sound: false,
   play: false,
+  ar: false,
   vr: false,
 };
 
@@ -83,6 +87,10 @@ export const reducer = produce((state: AppState, action: AppAction) => {
     }
     case ACTIONS.play: {
       state.play = action.data;
+      break;
+    }
+    case ACTIONS.ar: {
+      state.ar = action.data;
       break;
     }
     case ACTIONS.vr: {

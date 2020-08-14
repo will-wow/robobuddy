@@ -12,7 +12,11 @@ const World: React.FunctionComponent<WorldProps> = ({ state }) => {
     <>
       <a-entity
         id="world"
-        environment="preset: arches; shadow: true"
+        environment={renderData({
+          preset: "arches",
+          shadow: true,
+          active: !state.ar,
+        })}
       ></a-entity>
 
       <a-entity

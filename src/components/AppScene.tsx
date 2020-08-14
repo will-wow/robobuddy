@@ -1,5 +1,5 @@
 import React from "react";
-import { Entity } from "aframe";
+import { Entity, DetailEvent } from "aframe";
 import { Scene } from "aframe-react";
 import { createGlobalStyle } from "styled-components";
 
@@ -25,8 +25,15 @@ function AppScene() {
   const sceneEvents = React.useMemo(
     () => ({
       loaded: () => dispatch({ type: ACTIONS.loaded }),
-      "enter-vr": () => dispatch({ type: ACTIONS.vr, data: true }),
-      "exit-vr": () => dispatch({ type: ACTIONS.vr, data: false }),
+      "enter-vr": (event: DetailEvent<null>) => {
+        console.log("ar", event.target.is("ar-mode"));
+        const action = event.target.is("ar-mode") ? ACTIONS.ar : ACTIONS.vr;
+        dispatch({ type: action, data: true });
+      },
+      "exit-vr": () => {
+        dispatch({ type: ACTIONS.ar, data: false });
+        dispatch({ type: ACTIONS.vr, data: false });
+      },
     }),
     [dispatch]
   );
