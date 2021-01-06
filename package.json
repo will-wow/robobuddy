@@ -17,7 +17,7 @@
     "aframe-react": "^4.4.0",
     "aframe-state-component": "^6.8.0",
     "aframe-template-component": "^3.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "immer": "^6.0.9",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
